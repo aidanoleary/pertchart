@@ -4,78 +4,175 @@
  */
 package pertchart;
 
-import java.util.Calendar;
-
+import no.geosoft.cc.geometry.Geometry;
+import no.geosoft.cc.graphics.*;
 /**
- *A class that is used to represent a single task 
- * @author up636800
+ *
+ * @author Aidan O'Leary
+ * 
+ * This is a class that will be used to represent the a graphical object of
+ * a task.
  */
-public class Task {
-    /*
-     * Fields containing attributes for an object of class Task.
-     */
+public class Task extends GObject{
+    
     private String name;
     private int taskNumber;
-    private int parentNumber;
     private int numberOfDays;
-    private Calendar startDate;
-    private Calendar endDate;
+    private String startDate;
+    private String endDate;
+    private Task parent;
+    private double x, y;
+    private GSegment square;
+    private GSegment line;
+    
+    
+    
     
     /*
-     * Constructors for objects of the class task.
+     * Constructors for objects of type Task
      */
     public Task() {
         
     }
     
-    public Task(String name, int taskNumber, int parentNumber, int numberOfDays) {
+    /*
+     * The main constructor for objects of class Task
+     * 
+     * @param name
+     * @param taskNumber
+     * @param numberOfDays
+     * @param startDate
+     * @param endDate
+     * @param scene
+     * @param parent
+     * @param x
+     * @param y
+     */
+    public Task(String name, int taskNumber, int numberOfDays,
+                String startDate, String endDate, GScene scene, Task parent, double x, double y) {
+        
         this.name = name;
         this.taskNumber = taskNumber;
-        this.parentNumber = parentNumber;
         this.numberOfDays = numberOfDays;
-        startDate = Calendar.getInstance();
-        endDate = Calendar.getInstance();
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.parent = parent;
+        
+        this.x = x;
+        this.y = y;
+        
+        line = new GSegment();
+        addSegment(line);
+        
+        square = new GSegment();
+        addSegment(square);
+        
+        setStyle(new GStyle());
+        //maybe change this and remove the scene field.
+        if(parent == null) {
+            scene.add(this);
+        }
+        else {
+            parent.add(this);
+        }
 
+        updateText();
     }
     
     /*
-     * Accessor methods for the classes fields.
+     * An accessor method for the name field.
      */
     public String getName() {
         return name;
     }
     
+    /*
+     * An accessor method for the taskNumber field.
+     */
     public int getTaskNumber() {
         return taskNumber;
     }
     
+    /*
+     * An accessor method for the numberOfDays field.
+     */
     public int getNumberOfDays() {
         return numberOfDays;
     }
     
-    //Add date fields
+    /*
+     * An accessor method for the startDate field.
+     */
+    public String getStartDate() {
+        return startDate;
+    }
     
     /*
-     * Mutator methods for the classes fields.
+     * An accessor method for the endDate field.
      */
-    public void changeName(String newName) {
-        name = newName;
+    public String getEndDate() {
+        return endDate;
     }
     
-    public void changeTaskNumber(int newTaskNumber) {
-        taskNumber = newTaskNumber;
+    /*
+     * An accessor method for the x coordinate field.
+     */
+    public double getX() {
+        return x;
     }
     
-    public void changeNumberOfDays(int newNumberOfDays) {
-        numberOfDays = newNumberOfDays;
+    /*
+     * An accessor methdo for the y coordinate field.
+     */
+    public double getY() {
+        return y;
     }
     
-    //Add date fields
+    /*
+     * A method that updates the text displayed by the task object.
+     */
+    public void updateText() {
+        /*
+        Integer num;
+        String text = name + "\n";
+        
+        num = taskNumber;
+        text += num.toString() + "\n";
+        
+        num = numberOfDays;
+        text += num.toString() + "\n";
+        
+        text += startDate + "\n";
+        text += endDate + "\n";
+        
+        square.addText(new GText(text, GPosition.DYNAMIC));
+        */
+        
+        GText textName = new GText(name, GPosition.FIRST);
+        
+        Integer num;
+        num = taskNumber;
+        GText textTaskNum = new GText(num.toString());
+        
+        num = numberOfDays;
+        GText textNumOfDays = new GText(num.toString());
+        
+        GText textStart = new GText(startDate);
+        GText textEnd = new GText(endDate);
+        
+        square.addText(textName);
+        square.addText(textTaskNum);
+        square.addText(textNumOfDays);
+        square.addText(textStart);
+        square.addText(textEnd);
+
+    }
     
-    
-    
-    
-    
-    
-    
+    public void draw() {
+        if(parent != null) {
+            line.setGeometry(parent.getX(), parent.getY(), x, y);
+        }
+        
+        square.setGeometryXy(Geometry.createCircle(x, y, 150.0));
+    }
 }

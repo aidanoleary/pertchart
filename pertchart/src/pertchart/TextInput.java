@@ -79,5 +79,6 @@ public class TextInput {
         System.out.println("Enter the number of days to complete the task:\n");
         inputNumOfDays();
         System.out.println("Have You finished? Enter true or false:\n");
+        inputFinished();
     }
 }

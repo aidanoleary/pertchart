@@ -44,53 +44,52 @@ public class Start extends JFrame{
         double w1[] = {1500.0, 1500.0, 0.0};
         double w2[] = {0.0, 0.0, 0.0};
         scene.setWorldExtent(w0, w1, w2);
+        scene.shouldZoomOnResize(false);
+        
         
         GStyle style = new GStyle();
-        style.setForegroundColor(new Color (0, 0, 0));
+        style.setForegroundColor(Color.BLUE);
         style.setBackgroundColor(new Color (255, 255, 255));
-        style.setFont(new Font("Dialog", Font.BOLD, 14));
+        style.setFont(new Font("Dialog", Font.BOLD, 10));
         scene.setStyle(style);
-        /*
-        //CReate a graphics object
-        Task task1 = new Task("task1", 1, 2);
-        TaskGraphic graphic1 = new TaskGraphic(task1, scene, null, 200.0, 100.0);
         
-        Task task2 = new Task("task2", 2, 3);
-        TaskGraphic graphic2 = new TaskGraphic(task1, scene, graphic1, 300.0, 200.0);
         
-        Task task3 = new Task("task3", 3, 4);
-        TaskGraphic graphic3 = new TaskGraphic(task3, scene, graphic2, 600.0, 200.0);
-        
-        Task task4 = new Task("task4", 3, 4);
-        TaskGraphic graphic4 = new TaskGraphic(task4, scene, graphic3, 800.0, 300.0);
-        
-        Task task5 = new Task("task5", 3, 4);
-        TaskGraphic graphic5 = new TaskGraphic(task5, scene, graphic4, 1000.0, 400.0);
-        
-        Task task6 = new Task("task6", 3, 4);
-        TaskGraphic graphic6 = new TaskGraphic(task6, scene, graphic5, 1200.0, 200.0);
-        
-        Task task7 = new Task("task7", 3, 4);
-        TaskGraphic graphic7 = new TaskGraphic(task7, scene, graphic6, 1300.0, 500.0);
-        */
-        
+        //Gets the input from the user then creates the Task objects and also
+        //adds them to the taskList.
         TextInput input = new TextInput();
-        
-        /*
+        int counter = 0;
         while(input.getFinished() == false) {
             input.inputTask();
-            taskList.addTask(new Task(input.getName(),input.getTaskNum(),input.getParentNum(),input.getNumOfDays()));
+            Task parentTask = null;
+            double position = 200 + counter * 500;
+            for(Task task : taskList.getTaskList()) {
+                if(task.getTaskNumber() == input.getParentNum()) {
+                    parentTask = task;
+                }
+            }
+            taskList.addTask(new Task (input.getName(), input.getTaskNum(), input.getNumOfDays(), "testStartDate",
+                      "testEndDate", scene, parentTask, position, 500.0));
+            counter++;
         }
-        */
         
-        /*
-        for(int i = 0; i < taskList.lengthOfTaskList(); i++) {
-            Task currentTask = taskList.getTask(i);
-            new TaskGraphic(currentTask, scene, null, )
+        //Checks if more than 3 tasks have been created, if they have it changes
+        //the size of the scene world extent.
+        if(counter > 3) {
+            double newSize = 1500 + counter * 200;
+            double we0[] = {0.0, newSize, 0.0};
+            double we1[] = {newSize, newSize, 0.0};
+            double we2[] = {0.0, 0.0, 0.0};
+            scene.setWorldExtent(we0, we1, we2);
         }
-        */      
+        
         pack();
         setSize (new Dimension(500, 500));
+        
+        /*
+         * Checks if more than 3 tasks have been created, if they have it changes
+         * the size of the scene world extent.
+         */
+        
         setVisible(true);
         
     }
