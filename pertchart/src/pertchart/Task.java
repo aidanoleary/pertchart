@@ -58,7 +58,6 @@ public class Task extends GObject{
         this.endDate = endDate;
         this.parent = parent;
         
-        this.xPosition = xPosition;
         this.yPosition = yPosition;
         xSize = 200;
         ySize = 200;
@@ -73,11 +72,11 @@ public class Task extends GObject{
         //maybe change this and remove the scene field.
         if(parent == null) {
             scene.add(this);
+            this.xPosition = xPosition;
         }
         else {
             parent.add(this);
-            //this.x = parent.getX() + x;
-            //this.y = parent.getY() + y;
+            this.xPosition = parent.getXPosition() + xPosition;
         }
 
         updateText();
@@ -167,7 +166,7 @@ public class Task extends GObject{
     
     public void draw() {
         if(parent != null) {
-            line.setGeometry(parent.getXPosition() + 200, parent.getYPosition() + 100, xPosition + 200, yPosition + 100);
+            line.setGeometry(parent.getXPosition() + 200, parent.getYPosition() + 100, xPosition, yPosition + 100);
         }
         
         square.setGeometryXy(Geometry.createRectangle(xPosition, yPosition, xSize, ySize));

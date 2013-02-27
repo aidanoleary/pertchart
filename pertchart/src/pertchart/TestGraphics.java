@@ -64,11 +64,20 @@ public class TestGraphics extends JFrame {
             input.inputFinished();
             Task parentTask = null;
             int parentCounter = 0;
-            double xPosition = 200;
+            double xPosition = 300;
+            
+            //Checks if this is the first task. If it is it's xCoordinates
+            //get set a position of 200 rather than 500.
+            /*
+            if(taskList.lengthOfTaskList() == 0) {
+                xPosition = 200;
+            }
+            */
+                
             for(Task task : taskList.getTaskList()) {
                 if(task.getTaskNumber() == input.getParentNum()) {
                     parentTask = task;
-                    xPosition = xPosition + parentTask.getXPosition() + 200;
+                    //xPosition = xPosition + parentTask.getXPosition() + 200;
                 }
                 if(task.getParent() == parentTask) {
                     parentCounter++;
@@ -77,13 +86,15 @@ public class TestGraphics extends JFrame {
             double yPosition = 500 + parentCounter * 300;
             taskList.addTask(new Task("name", input.getTaskNum(), 2, "startDate", "endDate", scene, parentTask, xPosition, yPosition));
         }
+
         
         /*
         Task task1 = new Task("task1", 1, 2, "startDate", "endDate", scene, null, 200, 500);
-        Task task2 = new Task("task2", 2, 2, "startDate", "endDate", scene, task1, 600, 500);
-        Task task3 = new Task("task3", 3, 2, "startDate", "endDate", scene, task2, 1000, 500);
-        Task task4 = new Task("task4", 4, 2, "startDate", "endDate", scene, task2, 1200, 500);
-        */
+        Task task2 = new Task("task2", 2, 2, "startDate", "endDate", scene, task1, 200, 500);
+        Task task3 = new Task("task3", 3, 2, "startDate", "endDate", scene, task2, 200, 500);
+        Task task4 = new Task("task4", 4, 2, "startDate", "endDate", scene, task2, 200, 500);
+       
+       */
         pack();
         setSize (new Dimension(500, 500));
         

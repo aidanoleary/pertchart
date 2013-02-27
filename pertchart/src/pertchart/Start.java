@@ -61,38 +61,37 @@ public class Start extends JFrame{
             input.inputTask();
             Task parentTask = null;
             int parentCounter = 0;
-            double xPosition = 200;
+            double xPosition = 400;
+            
+            //Checks to see if this is the first task. If it is xPosition is 
+            //set to 200.
+            if(taskList.lengthOfTaskList() == 0) {
+                xPosition = 200;
+            }
+            
+            //Loops through the taskList field
             for(Task task : taskList.getTaskList()) {
+                //Checks if there is a task with a task number matching the input
+                //parent task number. If there is parentTask is set to that task.
                 if(task.getTaskNumber() == input.getParentNum()) {
                     parentTask = task;
-                    xPosition = xPosition + parentTask.getXPosition() + 200;
                 }
+                //Checks to see if there is already tasks with the same parent.
+                //If there is the parentCounter variable is incremented.
                 if(task.getParent() == parentTask) {
                     parentCounter++;
                 }
             }
+            
+            //The yPosition is determined on how many children a parentTask has.
+            //This is done using the previous parentCounter variable.
             double yPosition = 500 + parentCounter * 300;
-            //xPosition = xPosition - parentCounter * 200;
             taskList.addTask(new Task(input.getName(), input.getTaskNum(), input.getNumOfDays(), "startDate", "endDate", scene, parentTask, xPosition, yPosition));
         }
-        /*
-        while(input.getFinished() == false) {
-            input.inputTask();
-            Task parentTask = null;
-            double xPosition = 500;
-            for(Task task : taskList.getTaskList()) {
-                if(task.getTaskNumber() == input.getParentNum()) {
-                    parentTask = task;
-                    xPosition = xPosition + parentTask.getX();
-                }
-            }
-            taskList.addTask(new Task (input.getName(), input.getTaskNum(), input.getNumOfDays(), "testStartDate",
-                      "testEndDate", scene, parentTask, xPosition, 500.0));
-        }
-        */
 
         //Checks if more than 3 tasks have been created, if they have it changes
         //the size of the scene world extent.
+        //********* this may need to be change to reflect the y axis.
         if(taskList.lengthOfTaskList() > 3) {
             double newSize = 1500 + taskList.lengthOfTaskList() * 500;
             double we0[] = {0.0, newSize, 0.0};
