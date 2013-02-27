@@ -4,27 +4,30 @@
  */
 package pertchart;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import no.geosoft.cc.graphics.GScene;
+import no.geosoft.cc.graphics.GStyle;
+import no.geosoft.cc.graphics.GWindow;
 
-import no.geosoft.cc.geometry.Geometry;
-import no.geosoft.cc.graphics.*;
 /**
  *
  * @author Aidan
  */
-public class Start extends JFrame{
-
+public class TestGraphics extends JFrame {
     private GScene scene;
     private ListOfTasks taskList;
     
-    public Start() {
+    public TestGraphics() {
         
         super("Pert Chart");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        //will need to change this **********************
-        taskList = new ListOfTasks();
+        taskList = new ListOfTasks(); 
         
         //Create the gui window
         JPanel mainPanel = new JPanel();
@@ -53,12 +56,12 @@ public class Start extends JFrame{
         style.setFont(new Font("Dialog", Font.BOLD, 10));
         scene.setStyle(style);
         
-        
-        //Gets the input from the user then creates the Task objects and also
-        //adds them to the taskList.
+
         TextInput input = new TextInput();
         while(input.getFinished() == false) {
-            input.inputTask();
+            input.inputTaskNum();
+            input.inputParentNum();
+            input.inputFinished();
             Task parentTask = null;
             int parentCounter = 0;
             double xPosition = 200;
@@ -72,42 +75,18 @@ public class Start extends JFrame{
                 }
             }
             double yPosition = 500 + parentCounter * 300;
-            //xPosition = xPosition - parentCounter * 200;
-            taskList.addTask(new Task(input.getName(), input.getTaskNum(), input.getNumOfDays(), "startDate", "endDate", scene, parentTask, xPosition, yPosition));
-        }
-        /*
-        while(input.getFinished() == false) {
-            input.inputTask();
-            Task parentTask = null;
-            double xPosition = 500;
-            for(Task task : taskList.getTaskList()) {
-                if(task.getTaskNumber() == input.getParentNum()) {
-                    parentTask = task;
-                    xPosition = xPosition + parentTask.getX();
-                }
-            }
-            taskList.addTask(new Task (input.getName(), input.getTaskNum(), input.getNumOfDays(), "testStartDate",
-                      "testEndDate", scene, parentTask, xPosition, 500.0));
-        }
-        */
-
-        //Checks if more than 3 tasks have been created, if they have it changes
-        //the size of the scene world extent.
-        if(taskList.lengthOfTaskList() > 3) {
-            double newSize = 1500 + taskList.lengthOfTaskList() * 500;
-            double we0[] = {0.0, newSize, 0.0};
-            double we1[] = {newSize, newSize, 0.0};
-            double we2[] = {0.0, 0.0, 0.0};
-            scene.setWorldExtent(we0, we1, we2);
+            taskList.addTask(new Task("name", input.getTaskNum(), 2, "startDate", "endDate", scene, parentTask, xPosition, yPosition));
         }
         
+        /*
+        Task task1 = new Task("task1", 1, 2, "startDate", "endDate", scene, null, 200, 500);
+        Task task2 = new Task("task2", 2, 2, "startDate", "endDate", scene, task1, 600, 500);
+        Task task3 = new Task("task3", 3, 2, "startDate", "endDate", scene, task2, 1000, 500);
+        Task task4 = new Task("task4", 4, 2, "startDate", "endDate", scene, task2, 1200, 500);
+        */
         pack();
         setSize (new Dimension(500, 500));
         
-        /*
-         * Checks if more than 3 tasks have been created, if they have it changes
-         * the size of the scene world extent.
-         */
         
         setVisible(true);
         

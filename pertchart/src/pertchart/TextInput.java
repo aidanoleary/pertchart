@@ -28,22 +28,27 @@ public class TextInput {
     
     
     public void inputName() {
+        System.out.println("Enter the name of the task:\n");
         name = stringScanner.nextLine();
     }
     
     public void inputTaskNum() {
+        System.out.println("Enter the number of the task:\n");
         taskNum = intScanner.nextInt();
     }
     
     public void inputParentNum() {
+        System.out.println("Enter the parent of the task, or 0 if it doesn't have one:\n");
         parentNum = intScanner.nextInt();
     }
     
     public void inputNumOfDays() {
+        System.out.println("Enter the number of days to complete the task:\n");
         numOfDays = intScanner.nextInt();
     }
     
     public void inputFinished() {
+        System.out.println("Have You finished? Enter true or false:\n");
         finished = boolScanner.nextBoolean();
     }
     
@@ -70,15 +75,15 @@ public class TextInput {
     
     
     public void inputTask() {
-        System.out.println("Enter the name of the task:\n");
+        
         inputName();
-        System.out.println("Enter the number of the task:\n");
+        
         inputTaskNum();
-        System.out.println("Enter the parent of the task, or 0 if it doesn't have one:\n");
+        
         inputParentNum();
-        System.out.println("Enter the number of days to complete the task:\n");
+        
         inputNumOfDays();
-        System.out.println("Have You finished? Enter true or false:\n");
+        
         inputFinished();
     }
 }

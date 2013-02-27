@@ -21,7 +21,7 @@ public class Task extends GObject{
     private String startDate;
     private String endDate;
     private Task parent;
-    private double x, y;
+    private double xPosition, yPosition, xSize, ySize;
     private GSegment square;
     private GSegment line;
     
@@ -45,11 +45,11 @@ public class Task extends GObject{
      * @param endDate
      * @param scene
      * @param parent
-     * @param x
-     * @param y
+     * @param xPosition
+     * @param yPosition
      */
     public Task(String name, int taskNumber, int numberOfDays,
-                String startDate, String endDate, GScene scene, Task parent, double x, double y) {
+                String startDate, String endDate, GScene scene, Task parent, double xPosition, double yPosition) {
         
         this.name = name;
         this.taskNumber = taskNumber;
@@ -58,8 +58,10 @@ public class Task extends GObject{
         this.endDate = endDate;
         this.parent = parent;
         
-        this.x = x;
-        this.y = y;
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
+        xSize = 200;
+        ySize = 200;
         
         line = new GSegment();
         addSegment(line);
@@ -74,6 +76,8 @@ public class Task extends GObject{
         }
         else {
             parent.add(this);
+            //this.x = parent.getX() + x;
+            //this.y = parent.getY() + y;
         }
 
         updateText();
@@ -115,50 +119,43 @@ public class Task extends GObject{
     }
     
     /*
-     * An accessor method for the x coordinate field.
+     * An accessor method for the xPosition field.
      */
-    public double getX() {
-        return x;
+    public double getXPosition() {
+        return xPosition;
     }
     
     /*
-     * An accessor methdo for the y coordinate field.
+     * An accessor method for the yPosition field.
      */
-    public double getY() {
-        return y;
+    public double getYPosition() {
+        return yPosition;
+    }
+    
+    public double getXSize() {
+        return xSize;
+    }
+    
+    public double getYSize() {
+        return ySize;
     }
     
     /*
      * A method that updates the text displayed by the task object.
      */
     public void updateText() {
-        /*
-        Integer num;
-        String text = name + "\n";
         
-        num = taskNumber;
-        text += num.toString() + "\n";
-        
-        num = numberOfDays;
-        text += num.toString() + "\n";
-        
-        text += startDate + "\n";
-        text += endDate + "\n";
-        
-        square.addText(new GText(text, GPosition.DYNAMIC));
-        */
-        
-        GText textName = new GText(name, GPosition.FIRST);
+        GText textName = new GText(name, GPosition.TOP);
         
         Integer num;
         num = taskNumber;
-        GText textTaskNum = new GText(num.toString());
+        GText textTaskNum = new GText(num.toString(), GPosition.TOP);
         
         num = numberOfDays;
-        GText textNumOfDays = new GText(num.toString());
+        GText textNumOfDays = new GText(num.toString(), GPosition.TOP);
         
-        GText textStart = new GText(startDate);
-        GText textEnd = new GText(endDate);
+        GText textStart = new GText(startDate, GPosition.TOP);
+        GText textEnd = new GText(endDate, GPosition.TOP);
         
         square.addText(textName);
         square.addText(textTaskNum);
@@ -170,9 +167,9 @@ public class Task extends GObject{
     
     public void draw() {
         if(parent != null) {
-            line.setGeometry(parent.getX(), parent.getY(), x, y);
+            line.setGeometry(parent.getXPosition() + 200, parent.getYPosition() + 100, xPosition + 200, yPosition + 100);
         }
         
-        square.setGeometryXy(Geometry.createCircle(x, y, 150.0));
+        square.setGeometryXy(Geometry.createRectangle(xPosition, yPosition, xSize, ySize));
     }
 }
