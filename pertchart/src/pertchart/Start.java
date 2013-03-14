@@ -16,7 +16,7 @@ import no.geosoft.cc.graphics.*;
 public class Start extends JFrame{
 
     private GScene scene;
-    private ListOfTasks taskList;
+    private TaskList taskList;
     
     public Start() {
         
@@ -24,7 +24,7 @@ public class Start extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //will need to change this **********************
-        taskList = new ListOfTasks();
+        taskList = new TaskList();
         
         //Create the gui window
         JPanel mainPanel = new JPanel();
@@ -75,6 +75,7 @@ public class Start extends JFrame{
                 //parent task number. If there is parentTask is set to that task.
                 if(task.getTaskNumber() == input.getParentNum()) {
                     parentTask = task;
+                    
                 }
                 //Checks to see if there is already tasks with the same parent.
                 //If there is the parentCounter variable is incremented.

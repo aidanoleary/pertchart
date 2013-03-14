@@ -6,6 +6,7 @@ package pertchart;
 
 import no.geosoft.cc.geometry.Geometry;
 import no.geosoft.cc.graphics.*;
+import java.util.ArrayList;
 /**
  *
  * @author Aidan O'Leary
@@ -20,10 +21,10 @@ public class Task extends GObject{
     private int numberOfDays;
     private String startDate;
     private String endDate;
-    private Task parent;
+    private TaskList parentList;
     private double xPosition, yPosition, xSize, ySize;
     private GSegment square;
-    private GSegment line;
+    private ArrayList <GSegment> lineList;
     
     
     
@@ -49,34 +50,43 @@ public class Task extends GObject{
      * @param yPosition
      */
     public Task(String name, int taskNumber, int numberOfDays,
-                String startDate, String endDate, GScene scene, Task parent, double xPosition, double yPosition) {
+                String startDate, String endDate, GScene scene, TaskList parentList, double xPosition, double yPosition) {
         
         this.name = name;
         this.taskNumber = taskNumber;
         this.numberOfDays = numberOfDays;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.parent = parent;
+        this.parentList = parentList;
         
         this.yPosition = yPosition;
         xSize = 200;
         ySize = 200;
         
-        line = new GSegment();
-        addSegment(line);
-        
         square = new GSegment();
         addSegment(square);
         
+        lineList = new ArrayList<GSegment> ();
+        
         setStyle(new GStyle());
-        //maybe change this and remove the scene field.
-        if(parent == null) {
+        //maybe change this and remove the scene field. *********************
+        //
+        if(parentList == null) {
             scene.add(this);
             this.xPosition = xPosition;
         }
         else {
-            parent.add(this);
-            this.xPosition = parent.getXPosition() + xPosition;
+            //Create a list of lines that represent the connections between parent
+            //and child tasks.
+            for(int i = 0; i < parentList.lengthOfTaskList(); i++) {
+                lineList.add(new GSegment());
+                addSegment(lineList.get(i));
+            }
+            //Set the position of the task dependent on where it's first
+            //parent is located.
+            Task mainParent = parentList.getTask(0);
+            mainParent.add(this);
+            this.xPosition = mainParent.getXPosition() + xPosition;
         }
 
         updateText();
@@ -165,8 +175,13 @@ public class Task extends GObject{
     }
     
     public void draw() {
-        if(parent != null) {
-            line.setGeometry(parent.getXPosition() + 200, parent.getYPosition() + 100, xPosition, yPosition + 100);
+        //checks if the parentList is null and then sets the geometry of each
+        //line connected to it.
+        if(parentList != null) {         
+            for(int i =0; i < parentList.lengthOfTaskList(); i++) {
+                Task currentParent = parentList.getTask(i); 
+                lineList.get(i).setGeometry(currentParent.getXPosition() + 200, currentParent.getYPosition() + 100, xPosition, yPosition + 100);
+            }
         }
         
         square.setGeometryXy(Geometry.createRectangle(xPosition, yPosition, xSize, ySize));
